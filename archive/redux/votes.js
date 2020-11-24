@@ -1,20 +1,23 @@
 import axios from 'axios';
-import { URL } from './serverUrl';
+import { URL } from '../../src/serverUrl';
 
 // ACTION TYPES ========================================
-const GET_APPTS = 'GET_APPTS';
+const THUMBS_UP = 'THUMBS_UP';
+const THUMBS_DOWN = 'THUMBS_DOWN';
 
 // ACTION CREATORS =====================================
-const gotAppts = (appts) => ({
-	type: GET_APPTS,
-	appts
+const thumbsUp = () => ({
+	type: THUMBS_UP
+});
+
+const thumbsDown = () => ({
+	type: THUMBS_DOWN
 });
 
 // THUNK CREATORS ======================================
-export const getAppts = () => async (dispatch) => {
+export const voteThumbsUp = () => async (dispatch) => {
 	try {
-		const { data: appts } = await axios.get(`${URL}/api/appts`);
-		dispatch(gotAppts(appts));
+		await axios.post(`${URL}/api/movies/thumbsUp`);
 	} catch (error) {
 		console.error(error);
 	}
@@ -26,8 +29,8 @@ const initialState = [];
 // REDUCER =============================================
 const reducer = (state = initialState, action) => {
 	switch (action.type) {
-		case GET_APPTS:
-			return action.appts;
+		case GET_DOCTORS:
+			return action.doctors;
 	}
 	return state;
 };

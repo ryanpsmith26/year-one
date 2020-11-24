@@ -1,19 +1,13 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 
-import doctors from './doctor';
-// import patients from './patient';
-import appts from './appt';
+import votes from './votes';
 
 const appReducer = combineReducers({
-	doctors,
-	// patients,
-	appts
+	votes
 });
 
 const store = createStore(appReducer, applyMiddleware(thunkMiddleware));
 export default store;
 
-export * from './doctor';
-export * from './appt';
-// export * from './patient';
+export * from './votes';

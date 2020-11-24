@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp, faThumbsDown } from '@fortawesome/free-solid-svg-icons';
 
 import './App.css';
+import { URL } from '../serverUrl';
 
 const options = (method, str) => ({
 	method: 'GET',
@@ -21,48 +22,57 @@ const Movies = ({}) => {
 	const [ titles, setTitles ] = useState([]);
 	const [ title, setTitle ] = useState({});
 
-	const handleSubmitSearch = (e) => {
+	const handleSubmitSearch = async (e) => {
 		e.preventDefault();
 		setTitles([]);
 		setTitle({});
 		setLoadingTitles(true);
-		axios
-			.request(options('search', searchInput))
-			.then(function(response) {
-				setTitles(response.data.titles);
-				console.log('titles--->', titles);
-				setLoadingTitles(false);
-			})
-			.catch(function(error) {
-				console.error(error);
-			});
-
 		setSearchInput('');
+		try {
+			const res = await axios.request(options('search', searchInput));
+			setTitles(res.data.titles);
+		} catch (error) {
+			console.error(error);
+		} finally {
+			setLoadingTitles(false);
+		}
 	};
 
-	const handleDisplayMovieInfo = (id) => {
+	const handleDisplayMovieInfo = async (id) => {
 		setTitle({});
 		setLoadingTitleInfo(true);
-		axios
-			.request(options('film', id))
-			.then(function(response) {
-				setTitle(response.data);
-				console.log('title--->', response.data);
-				setLoadingTitleInfo(false);
-			})
-			.catch(function(error) {
-				console.error(error);
-			});
+		try {
+			const res = await axios.request(options('film', id));
+			setTitle(res.data);
+			const movie = await axios.get(`${URL}/api/movies/${id}`);
+			const thumbsUp = movie.data.thumbsUp;
+			const thumbsDown = movie.data.thumbsDown;
+			setTitle((prevTitle) => ({ ...prevTitle, thumbsUp, thumbsDown }));
+		} catch (error) {
+			console.error(error);
+		} finally {
+			setLoadingTitleInfo(false);
+		}
 	};
 
-	const handleUpVote = () => {
-		if (!title.upVote) setTitle((prevTitle) => ({ ...prevTitle, upVote: 1 }));
-		else setTitle((prevTitle) => ({ ...prevTitle, upVote: prevTitle.upVote++ }));
+	const handleUpVote = async () => {
+		await axios.put(`${URL}/api/movies/thumbsUp`, {
+			imdbId: title.id,
+			title: title.title
+		});
+
+		// for local state
+		setTitle((prevTitle) => ({ ...prevTitle, thumbsUp: prevTitle.thumbsUp++ }));
 	};
 
-	const handleDownVote = () => {
-		if (!title.downVote) setTitle((prevTitle) => ({ ...prevTitle, downVote: 1 }));
-		else setTitle((prevTitle) => ({ ...prevTitle, downVote: prevTitle.downVote++ }));
+	const handleDownVote = async () => {
+		await axios.put(`${URL}/api/movies/thumbsDown`, {
+			imdbId: title.id,
+			title: title.title
+		});
+
+		// for local state
+		setTitle((prevTitle) => ({ ...prevTitle, thumbsDown: prevTitle.thumbsDown++ }));
 	};
 
 	return (
@@ -103,16 +113,15 @@ const Movies = ({}) => {
 							<p>Year: {title.year}</p>
 							<p>Length: {title.length}</p>
 							<p>IMDB Rating: {title.rating}</p>
-							<p>Total IMDB Votes: {title.rating_votes}</p>
 							<div className="voteBtnContainer">
 								<button onClick={handleUpVote} className="voteBtns">
 									<FontAwesomeIcon icon={faThumbsUp} />
 								</button>
-								<p>{title.upVote}</p>
+								<p>{title.thumbsUp}</p>
 								<button onClick={handleDownVote} className="voteBtns">
 									<FontAwesomeIcon icon={faThumbsDown} />
 								</button>
-								<p>{title.downVote}</p>
+								<p>{title.thumbsDown}</p>
 							</div>
 						</div>
 					</div>
