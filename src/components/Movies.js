@@ -6,7 +6,7 @@ import { faThumbsUp, faThumbsDown } from '@fortawesome/free-solid-svg-icons';
 import './App.css';
 import { URL } from '../serverUrl';
 
-const options = (method, str) => ({
+const imdbOptions = (method, str) => ({
 	method: 'GET',
 	url: `https://imdb-internet-movie-database-unofficial.p.rapidapi.com/${method}/${str}`,
 	headers: {
@@ -15,7 +15,7 @@ const options = (method, str) => ({
 	}
 });
 
-const Movies = ({}) => {
+const Movies = () => {
 	const [ loadingTitles, setLoadingTitles ] = useState(false);
 	const [ loadingTitleInfo, setLoadingTitleInfo ] = useState(false);
 	const [ searchInput, setSearchInput ] = useState('');
@@ -29,7 +29,7 @@ const Movies = ({}) => {
 		setLoadingTitles(true);
 		setSearchInput('');
 		try {
-			const res = await axios.request(options('search', searchInput));
+			const res = await axios.request(imdbOptions('search', searchInput));
 			setTitles(res.data.titles);
 		} catch (error) {
 			console.error(error);
@@ -42,7 +42,7 @@ const Movies = ({}) => {
 		setTitle({});
 		setLoadingTitleInfo(true);
 		try {
-			const res = await axios.request(options('film', id));
+			const res = await axios.request(imdbOptions('film', id));
 			setTitle(res.data);
 			const movie = await axios.get(`${URL}/api/movies/${id}`);
 			const thumbsUp = movie.data.thumbsUp;
@@ -93,10 +93,9 @@ const Movies = ({}) => {
 			<div className="allMovies">
 				{loadingTitles && <p>Loading...</p>}
 				{titles &&
-					titles.map((title, i) => {
-						// fix key
+					titles.map((title) => {
 						return (
-							<button key={i} onClick={() => handleDisplayMovieInfo(title.id)}>
+							<button key={title.id} onClick={() => handleDisplayMovieInfo(title.id)}>
 								{title.title}
 							</button>
 						);
