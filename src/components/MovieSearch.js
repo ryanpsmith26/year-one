@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faThumbsUp, faThumbsDown } from '@fortawesome/free-solid-svg-icons';
+import { faThumbsUp, faThumbsDown, faSearch } from '@fortawesome/free-solid-svg-icons';
 
 import './App.css';
 import { URL } from '../serverUrl';
+import logo from '../images/clapperboard.jpeg';
 
 const imdbOptions = (method, str) => ({
 	method: 'GET',
@@ -15,7 +16,7 @@ const imdbOptions = (method, str) => ({
 	}
 });
 
-const Movies = () => {
+const MovieSearch = () => {
 	const [ loadingTitles, setLoadingTitles ] = useState(false);
 	const [ loadingTitleInfo, setLoadingTitleInfo ] = useState(false);
 	const [ searchInput, setSearchInput ] = useState('');
@@ -42,11 +43,12 @@ const Movies = () => {
 		setTitle({});
 		setLoadingTitleInfo(true);
 		try {
+			// get movie info from IMDB and put on state
 			const res = await axios.request(imdbOptions('film', id));
 			setTitle(res.data);
-			const movie = await axios.get(`${URL}/api/movies/${id}`);
-			const thumbsUp = movie.data.thumbsUp;
-			const thumbsDown = movie.data.thumbsDown;
+			// get vote data from our DB and add it to state
+			const { data: movie } = await axios.get(`${URL}/api/movies/${id}`);
+			const { thumbsUp, thumbsDown } = movie;
 			setTitle((prevTitle) => ({ ...prevTitle, thumbsUp, thumbsDown }));
 		} catch (error) {
 			console.error(error);
@@ -55,73 +57,89 @@ const Movies = () => {
 		}
 	};
 
-	const handleUpVote = async () => {
+	const handleThumbsUp = async () => {
 		await axios.put(`${URL}/api/movies/thumbsUp`, {
 			imdbId: title.id,
 			title: title.title
 		});
 
-		// for local state
+		// update local state for re-render
 		setTitle((prevTitle) => ({ ...prevTitle, thumbsUp: prevTitle.thumbsUp++ }));
 	};
 
-	const handleDownVote = async () => {
+	const handleThumbsDown = async () => {
 		await axios.put(`${URL}/api/movies/thumbsDown`, {
 			imdbId: title.id,
 			title: title.title
 		});
 
-		// for local state
+		// update local state for re-render
 		setTitle((prevTitle) => ({ ...prevTitle, thumbsDown: prevTitle.thumbsDown++ }));
 	};
 
 	return (
 		<div className="App">
-			<header className="App-header" />
-			<form onSubmit={handleSubmitSearch}>
-				<label>
-					Search for your next flick!
+			{/* HEADER / SEARCH ========================================== */}
+			<header className="header">
+				<div className="headerLogo">
+					<img src={logo} alt="" className="logoImg" />
+					<h1>IMDB Movie Lookup!</h1>
+				</div>
+				<form onSubmit={handleSubmitSearch} className="movieSearchForm">
 					<input
 						type="text"
 						placeholder="Enter Movie Title"
 						value={searchInput}
 						onChange={(e) => setSearchInput(e.target.value)}
 					/>
-				</label>
-				<input type="submit" value="Submit" />
-			</form>
-			<div className="allMovies">
-				{loadingTitles && <p>Loading...</p>}
+					<button type="submit">
+						<FontAwesomeIcon icon={faSearch} />
+					</button>
+				</form>
+			</header>
+			{/* MOVIE SEARCH RESULTS =================================== */}
+			<div className="allMoviesResults">
+				{!titles.length && !loadingTitles && <h2>Search for your next film!</h2>}
+				{loadingTitles && <h2>Loading...</h2>}
 				{titles &&
 					titles.map((title) => {
 						return (
 							<button key={title.id} onClick={() => handleDisplayMovieInfo(title.id)}>
-								{title.title}
+								<img src={title.image} alt="Poster for movie result" className="allMoviesImg" />
 							</button>
 						);
 					})}
 			</div>
-			<div className="singleMovie">
-				{loadingTitleInfo && <p>Loading...</p>}
+			<div className="selectedMovie">
+				{loadingTitleInfo && <h2>Loading...</h2>}
 				{title.title && (
 					<div className="movieCard">
-						<img src={`${title.poster}`} className="movieImg" />
+						<img src={`${title.poster}`} alt="Poster for selected movie" className="selectedMovieImg" />
 
 						<div className="movieData">
-							<p>Title: {title.title}</p>
-							<p>Year: {title.year}</p>
-							<p>Length: {title.length}</p>
-							<p>IMDB Rating: {title.rating}</p>
-							<div className="voteBtnContainer">
-								<button onClick={handleUpVote} className="voteBtns">
-									<FontAwesomeIcon icon={faThumbsUp} />
-								</button>
-								<p>{title.thumbsUp}</p>
-								<button onClick={handleDownVote} className="voteBtns">
-									<FontAwesomeIcon icon={faThumbsDown} />
-								</button>
-								<p>{title.thumbsDown}</p>
-							</div>
+							<p>
+								<strong>Title:</strong> {title.title}
+							</p>
+							<p>
+								<strong>Release Year:</strong> {title.year}
+							</p>
+							<p>
+								<strong>Length:</strong> {title.length}
+							</p>
+							<p>
+								<strong>IMDB Rating:</strong> {title.rating}
+							</p>
+							<p>
+								<strong>Plot:</strong> {title.plot}
+							</p>
+							<button onClick={handleThumbsUp} className="voteBtns">
+								<FontAwesomeIcon icon={faThumbsUp} />
+							</button>
+							<span className="thumbsUpNum">{title.thumbsUp}</span>
+							<button onClick={handleThumbsDown} className="voteBtns">
+								<FontAwesomeIcon icon={faThumbsDown} />
+							</button>
+							<span>{title.thumbsDown}</span>
 						</div>
 					</div>
 				)}
@@ -130,4 +148,4 @@ const Movies = () => {
 	);
 };
 
-export default Movies;
+export default MovieSearch;

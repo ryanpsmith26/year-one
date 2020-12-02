@@ -1,9 +1,9 @@
+// this file is for development purposes of year-one-server to fetch data from a local dev server
+// warning: making calls to the dev server may create 'Access-Control-Allow-Origin' error
+
 const PORT = 8080;
 const LOCALHOST = `http://localhost:${PORT}`;
 const HEROKU = 'https://year-one-server.herokuapp.com';
 
-// comment out before Heroku deployment:
-// export const URL = LOCALHOST;
-
-// comment in before Heroku deployment:
-export const URL = HEROKU;
+export const URL = LOCALHOST;
+// export const URL = HEROKU;
