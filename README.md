@@ -31,7 +31,7 @@ npm run start
 ```
 
 - This will run a server to serve the frontend of the project
-- Go to your browser and enter http://localhost:3000/ into the URL bar and you can start using the app!
+- Go to any browser and enter http://localhost:3000/ into the URL bar and you can start using the app!
 
 #### Getting Started
 
