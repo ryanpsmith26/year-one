@@ -2,7 +2,7 @@
 
 #### Backend Setup
 
-- Clone the code from this repo to your machine: [year-one-server](https://github.com/ryanpsmith26/year-one-server)
+- Clone the code from the following repo to your machine: [year-one-server](https://github.com/ryanpsmith26/year-one-server)
 - Make sure you have PostgreSQL installed on your machine and create a new database named year-one:
 
 ```zsh
@@ -16,12 +16,12 @@ npm install
 npm run start
 ```
 
-- Your terminal should indicate to you that the server is running on POR:8080
+- Your terminal should indicate to you that the server is running on PORT:8080
 
 #### Frontend Setup
 
-- Clone the code from this repo to your machine: [year-one](https://github.com/ryanpsmith26/year-one)
-- next cd into the project director from another terminal window, install dependenies and run the React app:
+- Clone the code from this repo to your machine.
+- next cd into the project director from another terminal window, install dependencies and run the React app:
 
 ```zsh
 cd year-one
