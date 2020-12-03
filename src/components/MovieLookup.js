@@ -3,20 +3,12 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp, faThumbsDown, faSearch } from '@fortawesome/free-solid-svg-icons';
 
-import './App.css';
+import './MovieLookup.css';
 import { URL } from '../serverUrl';
 import logo from '../images/clapperboard.jpeg';
+import imdbOptions from '../imdbOptions';
 
-const imdbOptions = (method, str) => ({
-	method: 'GET',
-	url: `https://imdb-internet-movie-database-unofficial.p.rapidapi.com/${method}/${str}`,
-	headers: {
-		'x-rapidapi-key': process.env.REACT_APP_IMDB_API_KEY,
-		'x-rapidapi-host': 'imdb-internet-movie-database-unofficial.p.rapidapi.com'
-	}
-});
-
-const MovieSearch = () => {
+const MovieLookup = () => {
 	const [ loadingTitles, setLoadingTitles ] = useState(false);
 	const [ loadingTitleInfo, setLoadingTitleInfo ] = useState(false);
 	const [ searchInput, setSearchInput ] = useState('');
@@ -79,7 +71,7 @@ const MovieSearch = () => {
 
 	return (
 		<div className="App">
-			{/* HEADER / SEARCH ========================================== */}
+			{/* HEADER / SEARCH BAR ============================================= */}
 			<header className="header">
 				<div className="headerLogo">
 					<img src={logo} alt="" className="logoImg" />
@@ -97,7 +89,7 @@ const MovieSearch = () => {
 					</button>
 				</form>
 			</header>
-			{/* MOVIE SEARCH RESULTS =================================== */}
+			{/* MOVIE SEARCH RESULTS SECTION =================================== */}
 			<div className="allMoviesResults">
 				{!titles.length && !loadingTitles && <h2>Search for your next film!</h2>}
 				{loadingTitles && <h2>Loading...</h2>}
@@ -110,6 +102,7 @@ const MovieSearch = () => {
 						);
 					})}
 			</div>
+			{/* SELECTED MOVIE SECTION ========================================= */}
 			<div className="selectedMovie">
 				{loadingTitleInfo && <h2>Loading...</h2>}
 				{title.title && (
@@ -147,4 +140,4 @@ const MovieSearch = () => {
 	);
 };
 
-export default MovieSearch;
+export default MovieLookup;

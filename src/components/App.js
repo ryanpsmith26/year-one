@@ -1,10 +1,10 @@
 import './App.css';
-import MovieSearch from './MovieSearch';
+import MovieLookup from './MovieLookup';
 
 function App() {
 	return (
 		<div className="App">
-			<MovieSearch />
+			<MovieLookup />
 		</div>
 	);
 }

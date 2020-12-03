@@ -41,4 +41,10 @@ npm run start
 - You may vote for that movie by clicking on the thumbs up and thumbs down buttons in the movie information section.
 - Vote as many times as you want!
 
+#### Development Notes
+
+- Project is currently implemented with one large React component.
+- For future expansion of this project, a Redux store will be implemented to manage state.
+- Once Redux state management is implemented, the MovieLookup component will be refactored into smaller components for readability and maintainability.
+
 ![Snapshot of App](app-snapshot.jpeg)

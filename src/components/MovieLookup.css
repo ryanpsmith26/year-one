@@ -1,0 +1,77 @@
+/* Header / Search Section _____________________________ */
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 0.5px solid #585d66;
+  padding: 20px;
+}
+
+.headerLogo {
+  display: flex;
+  align-items: center;
+}
+
+.logoImg {
+  width: 75px;
+  margin-right: 15px;
+}
+
+input {
+  margin-right: 5px;
+  padding: 0.5em 0.5em;
+}
+
+input:focus {
+  outline: none
+}
+
+/* Search Results Section ____________________________ */
+
+.allMoviesResults {
+  display: flex;
+  padding: 20px;
+  overflow-x: scroll;
+}
+
+.allMoviesResults>* {
+  margin: 0 10px;
+}
+
+.allMoviesResults>h2 {
+  margin: 150px auto
+}
+
+.allMoviesImg {
+  width: 200px;
+  height: 300px;
+  object-fit: cover;
+}
+
+/* Selected Movie Section ___________________________ */
+
+.selectedMovie {
+  padding: 20px;
+  border-top: 0.5px solid #585d66;
+}
+
+.movieCard {
+  display: flex
+}
+
+.selectedMovieImg {
+  width: 200px;
+  height: 300px;
+  object-fit: cover;
+  margin-right: 15px;
+  border-top: 0.5px solid #585d66;
+}
+
+.movieData {
+  text-align: left;
+}
+
+.thumbsUpNum {
+  margin-right: 25px;
+}
