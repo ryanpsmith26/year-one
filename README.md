@@ -1,4 +1,5 @@
-# YearOne API Assessment - IMDB Movie Lookup!
+# Ryan Smith YearOne API Assessment
+## IMDB Movie Lookup!
 
 #### Backend Setup
 
@@ -8,7 +9,7 @@
 ```zsh
 createdb year-one
 ```
-- next cd into the project directory from your terminal, install dependencies and run the server:
+- Next, cd into the project directory from your terminal, install dependencies and run the server:
 
 ```zsh
 cd year-one-server
