@@ -21,8 +21,8 @@ npm run start
 
 #### Frontend Setup
 
-- Clone the code from this repo to your machine.
-- next cd into the project director from another terminal window, install dependencies and run the React app:
+- Clone the code from **this** repo to your machine.
+- next cd into the project directory from another terminal window, install dependencies and run the React app:
 
 ```zsh
 cd year-one
