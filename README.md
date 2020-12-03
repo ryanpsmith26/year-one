@@ -4,7 +4,7 @@
 #### Backend Setup
 
 - Clone the code from the following repo to your machine: [year-one-server](https://github.com/ryanpsmith26/year-one-server)
-- Make sure you have PostgreSQL installed on your machine and create a new database named year-one:
+- Make sure you have both Node.js and PostgreSQL installed on your machine and create a new database named year-one:
 
 ```zsh
 createdb year-one
