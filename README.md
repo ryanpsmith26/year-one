@@ -22,10 +22,23 @@ npm run start
 #### Frontend Setup
 
 - Clone the code from **this** repo to your machine.
-- Next, cd into the project directory from another terminal window, install dependencies and run the React app:
+- From another terminal window, cd into this project and create a new file ```.env``` in the root directory, and open that file up in a text editor:
 
 ```zsh
 cd year-one
+touch .env
+open .env
+```
+- Type the following into the file and save:
+
+```
+REACT_APP_IMDB_API_KEY="enter API key here"
+```
+**NOTE:** Be sure to replace "enter API key here" with the correct key. Please contact <ryanpsmith01@gmail.com> if you do not have access to the key already!
+
+- Install dependencies and run the React app:
+
+```zsh
 npm install
 npm run start
 ```
