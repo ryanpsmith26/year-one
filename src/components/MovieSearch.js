@@ -115,7 +115,6 @@ const MovieSearch = () => {
 				{title.title && (
 					<div className="movieCard">
 						<img src={`${title.poster}`} alt="Poster for selected movie" className="selectedMovieImg" />
-
 						<div className="movieData">
 							<p>
 								<strong>Title:</strong> {title.title}
